@@ -7,23 +7,23 @@
                         ログイン
                     </v-card-title>
                     <v-card-text>
-                        <!-- <v-form @submit.prevent="login"> -->
-                        <v-text-field v-model="memberInfo.email" :rules="rules.emailRules" label="Email"
-                            required></v-text-field>
+                        <v-form @submit.prevent="login">
+                            <v-text-field v-model="memberInfo.email" :rules="rules.emailRules" label="Email"
+                                required></v-text-field>
 
-                        <v-text-field v-model="memberInfo.password" :rules="rules.passwordRules" label="パスワード"
-                            required></v-text-field>
-                        <v-row class="d-flex justify-center align-center" style="height: 100%;">
-                            <v-col cols="auto" class="text-center mx-2">
-                                <BackButton />
-                            </v-col>
-                            <v-col cols="auto" class="text-center mx-2">
-                                <!-- <BaseButton to="#" label="ログイン" @click="login" /> -->
-                                <button type="button" @click="login">ログイン</button>
+                            <v-text-field v-model="memberInfo.password" :rules="rules.passwordRules" label="パスワード"
+                                required></v-text-field>
+                            <v-row class="d-flex justify-center align-center" style="height: 100%;">
+                                <v-col cols="auto" class="text-center mx-2">
+                                    <BackButton />
+                                </v-col>
+                                <v-col cols="auto" class="text-center mx-2">
+                                    <button type="submit">ログイン</button>
+                                    <!-- <BaseButton to=" #" label="ログイン" @click="login" /> -->
 
-                            </v-col>
-                        </v-row>
-                        <!-- </v-form> -->
+                                </v-col>
+                            </v-row>
+                        </v-form>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -60,11 +60,11 @@ const memberInfo = reactive<MemberInfo>({
 const login = async () => {
     try {
         const response = await axios.post(BASE_URL + '/login', {
-            username: "user",
-            password: "password",
+            username: memberInfo.email,
+            password: memberInfo.password,
         }, {
             headers: {
-                'Content-type': 'application/json;charset=utf-8'
+                'Content-type': 'application/x-www-form-urlencoded'
             }
         });
         if (response.status === 200) {
