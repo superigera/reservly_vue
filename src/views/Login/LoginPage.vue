@@ -18,9 +18,7 @@
                                     <BackButton />
                                 </v-col>
                                 <v-col cols="auto" class="text-center mx-2">
-                                    <button type="submit">ログイン</button>
-                                    <!-- <BaseButton to=" #" label="ログイン" @click="login" /> -->
-
+                                    <BaseButton type="submit" to="" label="ログイン" />
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -35,7 +33,8 @@
 import { reactive } from 'vue'
 import { MemberInfo } from '@/types/MemberInfo'
 import { rules } from '@/validation/validationRules';
-// import BaseButton from '@/components/button/BaseButton.vue'
+import router from '@/router'
+import BaseButton from '@/components/button/BaseButton.vue'
 import BackButton from '@/components/button/BackButton.vue'
 import axios from 'axios'
 const BASE_URL = process.env.VUE_APP_API_BASE_URL
@@ -48,7 +47,8 @@ const memberInfo = reactive<MemberInfo>({
     age: 0,
     gender: '',
     password: '',
-    passwordConfirm: ''
+    passwordConfirm: '',
+    authority: ''
 });
 
 // axios.get<string>(BASE_URL + '/csrf-token').then(response => {
@@ -68,11 +68,20 @@ const login = async () => {
             }
         });
         if (response.status === 200) {
-            console.log(memberInfo.email)
-            console.log(memberInfo.password)
             console.log("Login success:", response);
+            //ログイン情報をvuexに保存
+            //権限で遷移先判定
+
+            // if (response.data.role === 'ADMIN') {
+            //管理者ページへ遷移
+            router.push('/admin')
+            // } else {
+            //マイページへ遷移
+            // router.push('/myPage')
+            // }
         }
     } catch (error) {
+        //ログイン失敗時エラー
         console.error("Login failed:", error);
     }
 

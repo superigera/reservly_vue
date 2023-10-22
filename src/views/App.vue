@@ -1,8 +1,8 @@
 <template>
   <v-layout>
 
-    <v-main>
-      <router-view style="background-color: #B0BEC5;" />
+    <v-main style="background-color: #B0BEC5;">
+      <router-view />
     </v-main>
   </v-layout>
 </template>
