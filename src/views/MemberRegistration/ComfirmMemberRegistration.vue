@@ -65,15 +65,23 @@ const isAgreed = ref(false);
 const register = () => {
     if (isAgreed.value) {
         axios.post(BASE_URL + "/newMemberRegistration", memberInfo.value, {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" }
         }).then((res) => {
-            //TODOメール送信とvuex初期化
             console.log(res);
-            // store.commit('resetState');
+            router.push({ path: '/top' });
         }).catch((err) => {
-            //TODOアラート出してサポデに連絡させるようにする、vuexの初期化も
+
             console.log(err);
-            // store.commit('resetState');
+            if (err.response.status === 409) {
+                alert('このメールアドレスは登録されています。別のメールアドレスをお試しください。');
+            }
+            else if (err.response.status === 500) {
+                alert('サーバーエラーが発生しました。サポートデスクにお問い合わせください。');
+                router.push({ path: '/top' });
+            }
+            else {
+                alert('予期せぬエラーが発生しました。サポートデスクにお問い合わせください。');
+                router.push({ path: '/top' });
+            }
         });
     }
 };

@@ -7,7 +7,7 @@
                         ログイン
                     </v-card-title>
                     <v-card-text>
-                        <v-form @submit.prevent="login">
+                        <v-form @submit.prevent="login" v-model="valid">
                             <v-text-field v-model="memberInfo.email" :rules="rules.emailRules" label="Email"
                                 required></v-text-field>
 
@@ -18,7 +18,7 @@
                                     <BackButton />
                                 </v-col>
                                 <v-col cols="auto" class="text-center mx-2">
-                                    <BaseButton type="submit" to="" label="ログイン" />
+                                    <BaseButton :disabled="!valid" to="" label="ログイン" />
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -30,14 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { MemberInfo } from '@/types/MemberInfo'
 import { rules } from '@/validation/validationRules';
 import router from '@/router'
 import BaseButton from '@/components/button/BaseButton.vue'
 import BackButton from '@/components/button/BackButton.vue'
 import axios from 'axios'
+import { useStore } from 'vuex';
 const BASE_URL = process.env.VUE_APP_API_BASE_URL
+const store = useStore();
+const valid = ref(false);
 
 const memberInfo = reactive<MemberInfo>({
     lastName: '',
@@ -70,19 +73,21 @@ const login = async () => {
         if (response.status === 200) {
             console.log("Login success:", response);
             //ログイン情報をvuexに保存
-            //権限で遷移先判定
+            memberInfo.authority = response.data.authority;
+            memberInfo.email = response.data.email;
+            store.commit('setMemberInfo', memberInfo);
 
-            // if (response.data.role === 'ADMIN') {
-            //管理者ページへ遷移
-            router.push('/admin')
-            // } else {
-            //マイページへ遷移
-            // router.push('/myPage')
-            // }
+            //権限で遷移先判定
+            if (response.data.authority === 'ADMIN') {
+                //管理者ページへ遷移
+                router.push('/admin')
+            } else {
+                //マイページへ遷移
+                router.push('/myPage')
+            }
         }
     } catch (error) {
-        //ログイン失敗時エラー
-        console.error("Login failed:", error);
+        alert("ログインに失敗しました。メールアドレスとパスワードを確認してください。");
     }
 
 }
