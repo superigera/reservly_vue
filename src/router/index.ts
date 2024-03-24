@@ -5,6 +5,8 @@ import ComfirmMemberRegistration from '@/views/MemberRegistration/ComfirmMemberR
 import LoginPage from '@/views/Login/LoginPage.vue'
 import AdminPage from '@/views/Admin/AdminPage.vue'
 import MyPage from '@/views/MyPage/MyPage.vue'
+import ProductSelection from '@/views/ProductReservly/ProductSelection.vue'
+import PaymentMethodSelection from '@/views/ProductReservly/PaymentMethodSelection.vue'
 
 const routes = [
     {
@@ -36,6 +38,16 @@ const routes = [
         path: '/myPage',
         name: 'MyPage',
         component: MyPage,
+    },
+    {
+        path: '/productSelection',
+        name: 'ProductSelection',
+        component: ProductSelection,
+    },
+    {
+        path: '/paymentMethodSelection',
+        name: 'PaymentMethodSelection',
+        component: PaymentMethodSelection,
     }
 ]
 

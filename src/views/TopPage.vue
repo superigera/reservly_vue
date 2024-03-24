@@ -9,12 +9,14 @@
     </v-carousel>
     <ToNewMemberRegistrationButton />
     <ToLoginPageButton />
+    <ToProductSelectionButton />
   </v-app>
 </template>
 
 <script setup lang="ts">
 import ToNewMemberRegistrationButton from '@/components/button/ToNewMemberRegistrationButton.vue';
 import ToLoginPageButton from '@/components/button/ToLoginPageButton.vue';
+import ToProductSelectionButton from '@/components/button/ToProductSelectionButton.vue';
 </script>
 
 <style></style>
